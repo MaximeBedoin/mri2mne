@@ -1,3 +1,5 @@
+> 🌍 **Français** · [English](README.en.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [Español](README.es.md) · [العربية](README.ar.md)
+
 # IRM → MNE : analyse de sources EEG corticale (FEM SimNIBS, Windows natif)
 
 Pipeline complet allant d'un **IRM en DICOM** + un **enregistrement EEG** à

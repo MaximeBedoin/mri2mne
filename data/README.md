@@ -1,3 +1,5 @@
+> 🌍 **Français** · [English](README.en.md)
+
 # Données d'exemple
 
 Deux patients de démonstration, pour montrer **l'architecture des données** et
