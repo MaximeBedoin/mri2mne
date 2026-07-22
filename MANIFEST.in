@@ -1,0 +1,24 @@
+# What goes into the source distribution (sdist).
+#
+# The importable package lives under src/mri2mne/ and is picked up automatically.
+# We ship the docs and packaging metadata, but NOT the ~170 MB example dataset
+# (DICOM/EEG): example data belongs in the Git repository, not in the pip
+# artifact. Users clone the repo to get data/; `pip install` stays lightweight.
+
+include README.md
+include LICENSE
+include pyproject.toml
+include environment.yml
+include config.example.yaml
+
+# Keep the example *scripts* (small, illustrative) ...
+recursive-include examples *.py
+
+# ... but exclude the heavy example dataset and any computed outputs.
+prune data
+prune examples/_full_run
+prune examples/_sample_run
+prune examples/_inverse_run
+prune examples/_vol_run
+prune examples/_batch_derivatives
+global-exclude __pycache__ *.py[cod] *.nii *.nii.gz *.mgz *.stc

@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mri2mne"
+version = "0.1.0"
+description = "DICOM MRI + EEG to MNE-Python source analysis (SimNIBS FEM cortical route; optional FreeSurfer/WSL volumetric BEM route)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Maxime Bedoin", email = "maxime.bedoin@gmail.com" }]
+keywords = ["EEG", "MRI", "source-localization", "MNE", "SimNIBS", "FEM", "BEM"]
+
+# The base install covers the Windows-native surface FEM route and the batch
+# runner. It does NOT install SimNIBS (`charm` + FEM solver) -- that lives in a
+# separate `simnibs_env` and is called as a subprocess (see README). The
+# volumetric BEM route needs FreeSurfer inside WSL2, a system-level prerequisite
+# with no extra Python dependency.
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+    "mne>=1.6",
+    "nibabel>=5.1",
+    "pydicom>=2.4",
+    "joblib>=1.3",
+    "pyyaml>=6.0",
+    "tqdm>=4.65",
+    "dicom2nifti>=2.4",   # pure-Python DICOM->NIfTI fallback (dcm2niix preferred)
+]
+
+[project.optional-dependencies]
+# 3D QC screenshots and the interactive source viewer (mri2mne.viz).
+viz = ["pyvista>=0.43", "vtk>=9.2"]
+# Preferred DICOM->NIfTI converter as a bundled binary wheel.
+dcm2niix = ["dcm2niix>=1.0.20220715"]
+dev = ["pytest>=7.4"]
+# Everything for local development / the reference conda env behaviour.
+all = ["pyvista>=0.43", "vtk>=9.2", "dcm2niix>=1.0.20220715", "pytest>=7.4"]
+
+[project.urls]
+Homepage = "https://github.com/MaximeBedoin/mri2mne"
+
+[project.scripts]
+mri2mne = "mri2mne.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

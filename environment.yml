@@ -1,0 +1,44 @@
+# Conda environment that PILOTS the pipeline. The SimNIBS-specific steps (charm,
+# FEM leadfield, mesh) run in a SEPARATE environment, `simnibs_env`, installed
+# from the SimNIBS 4 release (see README). This env never imports simnibs; it
+# calls the SimNIBS tools as subprocesses. Point `simnibs.bin_dir` in
+# config.yaml at simnibs_env's Scripts folder.
+#
+#   conda env create -f environment.yml
+#   conda activate irm2mne
+name: irm2mne
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+
+  # --- Core scientific stack -------------------------------------------------
+  - numpy>=1.24
+  - scipy>=1.10
+  - matplotlib>=3.7
+
+  # --- Neuroimaging ----------------------------------------------------------
+  - mne>=1.6
+  - nibabel>=5.1
+  - pydicom>=2.4
+  - dcm2niix                # robust DICOM -> NIfTI (preferred converter)
+
+  # --- 3D QC screenshots -----------------------------------------------------
+  # pyvista+vtk back MNE's 3D alignment figure in the QC report.
+  - pyvista>=0.43
+  - vtk>=9.2
+
+  # --- Orchestration ---------------------------------------------------------
+  - joblib>=1.3
+  - pyyaml>=6.0
+  - tqdm>=4.65
+
+  # --- Dev -------------------------------------------------------------------
+  - pytest>=7.4
+
+  - pip
+  - pip:
+      # Pure-python fallback converter, used only if dcm2niix is unavailable.
+      - dicom2nifti>=2.4

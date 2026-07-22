@@ -1,0 +1,148 @@
+# Example configuration. Copy to config.yaml and edit.
+#
+#   copy config.example.yaml config.yaml
+#   python run_pipeline.py --config config.yaml
+
+# ---------------------------------------------------------------------------
+# Paths
+# ---------------------------------------------------------------------------
+paths:
+  # Root holding one sub-folder of DICOMs per subject, e.g.
+  #   D:/data/dicom/sub-001/... , D:/data/dicom/sub-002/...
+  dicom_root: "D:/data/dicom"
+
+  # Everything the pipeline writes goes here.
+  derivatives_root: "D:/data/derivatives"
+
+  # FreeSurfer-style subjects_dir that the pipeline synthesises (no FreeSurfer
+  # is run; we only reproduce the directory layout MNE expects).
+  subjects_dir: "D:/data/derivatives/subjects"
+
+  # Electrode digitisation. `{subject}` is substituted per subject.
+  # Supported: .fif .hsp/.elp (Polhemus) .bvct (CapTrak) .sfp .elc .hpts .csd
+  digitisation: "D:/data/digitisation/{subject}_electrodes.elc"
+
+# ---------------------------------------------------------------------------
+# Head model / route
+# ---------------------------------------------------------------------------
+# "fem" -> SimNIBS FEM, cortical SURFACE sources, 100% Windows-native (default).
+# "bem" -> FreeSurfer 3-layer BEM, VOLUMETRIC sources, needs WSL2 + FreeSurfer
+#          (see README "Route volumique"). Uses the `bem:` section below and
+#          ignores `simnibs:`/`fem:`.
+head_model: "fem"
+
+# ---------------------------------------------------------------------------
+# Subject selection
+# ---------------------------------------------------------------------------
+subjects:
+  # null  -> auto-discover every sub-folder of dicom_root
+  # or an explicit list: ["sub-001", "sub-002"]
+  include: null
+  exclude: []
+
+# ---------------------------------------------------------------------------
+# SimNIBS
+# ---------------------------------------------------------------------------
+simnibs:
+  # Folder containing charm.cmd / charm.exe. Typically:
+  #   C:/Users/<you>/SimNIBS-4.5/bin
+  # Leave null to rely on charm being on PATH.
+  bin_dir: null
+
+  # Optional T2 image (greatly improves skull segmentation). `{subject}`
+  # substituted; null disables.
+  t2_template: null
+
+  # Extra CLI flags forwarded verbatim to charm.
+  extra_args: []
+
+  # Wall-clock ceiling per subject, seconds. charm is normally 1-2 h.
+  timeout_s: 21600
+
+# ---------------------------------------------------------------------------
+# Anonymisation
+# ---------------------------------------------------------------------------
+anonymize:
+  enabled: true
+  # Write a defaced *copy* of the T1 (<subject>_T1w_defaced.nii.gz) for sharing
+  # outward. charm always receives the intact image: the cut removes scalp and
+  # frontal bone that the segmentation needs. Heuristic, not a validated tool --
+  # look at it before releasing anything.
+  deface: false
+
+# ---------------------------------------------------------------------------
+# FEM forward / cortical source space (SimNIBS)
+# ---------------------------------------------------------------------------
+fem:
+  # Cortical source points per hemisphere for the FEM leadfield. 10000 is a
+  # good default; lower (e.g. 5000) is faster, higher is denser.
+  subsampling: 10000
+
+  # Parallel electrode solves. Forced to 1 on Windows (SimNIBS' leadfield
+  # parallelisation is not picklable under the Windows spawn start method).
+  cpus: 1
+
+  # Also build a morph to the fsaverage template for group analysis
+  # (5/6/7 subdivisions), or null to skip.
+  morph_to_fsaverage: 5
+
+# ---------------------------------------------------------------------------
+# BEM / volumetric head model (FreeSurfer via WSL) -- only used if
+# head_model is "bem".
+# ---------------------------------------------------------------------------
+bem:
+  # Volume source grid spacing in mm (5.0 is a common default; smaller = denser).
+  pos_mm: 5.0
+
+  # Conductivities (S/m) for brain, skull, scalp.
+  conductivity: [0.3, 0.006, 0.3]
+
+  # BEM surface tessellation order (ico). 4 -> 2562 vertices/surface.
+  ico: 4
+
+  # Refuse to build a BEM from self-intersecting watershed surfaces (flags the
+  # subject instead). Set false to build an imperfect BEM anyway.
+  strict: true
+
+  # WSL distro name (null -> the default distro) and FreeSurfer location
+  # (null -> auto-detect $HOME/freesurfer then /usr/local/freesurfer).
+  wsl_distro: null
+  freesurfer_home: null
+
+# ---------------------------------------------------------------------------
+# Coregistration
+# ---------------------------------------------------------------------------
+# Fiducials come from charm (subject space); the scalp comes from the SimNIBS
+# mesh. MNE's Coregistration fits the digitised head shape to that scalp.
+coregistration:
+  # ICP iterations fitting the digitised head shape to the scalp surface.
+  icp_iterations: 20
+
+  # Drop digitised points further than this from the scalp (mm) before ICP;
+  # they are almost always neck/shoulder points or digitiser glitches.
+  omit_distance_mm: 15.0
+
+  # Subjects whose post-ICP median residual exceeds this (mm) are flagged in
+  # the batch summary for manual review. They are NOT silently accepted.
+  max_residual_mm: 5.0
+
+# ---------------------------------------------------------------------------
+# Execution
+# ---------------------------------------------------------------------------
+run:
+  # Parallel subjects. charm is memory-hungry (~4-8 GB), so budget ~8 GB per
+  # worker: 2 on 16 GB, 3-4 on 32 GB, 6-8 on 64 GB. null -> cpu_count // 4.
+  # Each worker is given cpu_count // n_jobs threads for charm automatically.
+  n_jobs: null
+
+  # Re-run these stages even if cached. Stage names:
+  #   convert, headmodel, coreg, forward, qc
+  force: []
+
+  # Keep going when one subject fails.
+  continue_on_error: true
+
+  # Delete the anonymised DICOM copy and the non-T1 converted series once the
+  # T1 is extracted (~2-3 GB per subject). The originals under dicom_root are
+  # never touched, so conversion stays reproducible from source.
+  cleanup_intermediates: true

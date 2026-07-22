@@ -1,0 +1,35 @@
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# --- Packaging build artifacts --------------------------------------------
+build/
+dist/
+*.egg-info/
+
+# --- Local configuration holds real patient data paths -- never commit it. -
+config.yaml
+
+# --- Computed outputs must never be committed -----------------------------
+derivatives/
+subjects/
+data/_batch_derivatives/
+data/*/surface/
+data/*/volumetric/
+examples/_sample_run/
+examples/_inverse_run/
+examples/_full_run/
+examples/_vol_run/
+
+# --- Heavy neuroimaging binaries ------------------------------------------
+# Ignored by default to guard against stray patient data anywhere in the tree,
+# BUT the curated example inputs under data/ are explicitly re-included below.
+# (A file under an ignored *directory* -- e.g. the outputs above -- can never be
+# re-included, so the example negations only rescue real example inputs.)
+*.nii
+*.nii.gz
+*.mgz
+*.fif
+!data/**/*.fif

@@ -1,0 +1,36 @@
+# Config de lot pour les données d'exemple (data/).
+#
+#   python run_pipeline.py --config data/config.batch.yaml --check
+#   python run_pipeline.py --config data/config.batch.yaml
+#
+# Route surfacique (FEM) par défaut. Pour la route volumique (BEM), mettre
+# head_model: "bem" ci-dessous (nécessite WSL2 + FreeSurfer, voir le README).
+
+head_model: "fem"          # "fem" (SimNIBS) ou "bem" (FreeSurfer/WSL)
+
+paths:
+  # Chaque sous-dossier de dicom_root est un sujet ; le pipeline y trouve les
+  # DICOM (récursivement, dans dicom/).
+  dicom_root: "data"
+  derivatives_root: "data/_batch_derivatives"
+  subjects_dir: "data/_batch_derivatives/subjects"
+  digitisation: "data/{subject}/{subject}_dig.fif"
+
+subjects:
+  include: ["patient01", "patient02"]   # explicite (évite de scanner les sorties)
+
+simnibs:
+  # Dossier Scripts de l'env conda simnibs_env (route FEM).
+  # >>> À REMPLACER par le chemin sur votre machine <<<
+  # Typiquement : <votre_miniconda>/envs/simnibs_env/Scripts
+  bin_dir: "C:/Users/VOTRE_NOM/Miniconda3/envs/simnibs_env/Scripts"
+
+bem:
+  # Réglages route volumique (utilisés seulement si head_model: bem).
+  pos_mm: 5.0
+  wsl_distro: null
+  freesurfer_home: null
+
+run:
+  n_jobs: null
+  continue_on_error: true
