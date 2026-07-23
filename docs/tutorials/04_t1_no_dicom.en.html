@@ -29,7 +29,7 @@
     <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
 )</code></pre>
 <p>The DICOM→NIfTI conversion is simply skipped; the T1 is copied as is and feeds <code>charm</code>. Every later stage is identical.</p>
-<figure><img src="_assets/t1_ortho.png" alt="The supplied T1, as used for segmentation." loading="lazy"><figcaption>The supplied T1, as used for segmentation.</figcaption></figure>
+<figure><img src="assets/t1_ortho.png" alt="The supplied T1, as used for segmentation." loading="lazy"><figcaption>The supplied T1, as used for segmentation.</figcaption></figure>
 <aside class="note">A T2 (<code>t2_path</code>) markedly improves skull segmentation if your protocol has one. DICOM anonymisation no longer applies here — make sure the T1 is already de-identified before sharing it.</aside>
   <nav class="pager"><a class="pn prev" href="03_external_events.en.html">← Events in an external file</a><a class="pn next" href="05_volumetric.en.html">Volumetric route (BEM / FreeSurfer): the complete pipeline →</a></nav>
 </article>

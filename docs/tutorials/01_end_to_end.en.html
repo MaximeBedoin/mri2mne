@@ -37,29 +37,29 @@
 <span class="nm">print</span>(<span class="nm">result</span>.<span class="nm">source_estimate_file</span>, <span class="nm">result</span>.<span class="nm">peak</span>)</code></pre>
 <h2 id="step-1-anatomy-dicom-t1">Step 1 — Anatomy (DICOM → T1)</h2>
 <p>The DICOM folder is anonymised then converted to a single T1 NIfTI volume. That image is all the rest of the pipeline needs.</p>
-<figure><img src="_assets/t1_ortho.png" alt="The &lt;code&gt;sample&lt;/code&gt; subject&#x27;s T1, sagittal, coronal and axial slices." loading="lazy"><figcaption>The <code>sample</code> subject's T1, sagittal, coronal and axial slices.</figcaption></figure>
+<figure><img src="assets/t1_ortho.png" alt="The &lt;code&gt;sample&lt;/code&gt; subject&#x27;s T1, sagittal, coronal and axial slices." loading="lazy"><figcaption>The <code>sample</code> subject's T1, sagittal, coronal and axial slices.</figcaption></figure>
 <h2 id="step-2-the-head-model-simnibs-charm">Step 2 — The head model (SimNIBS charm)</h2>
 <p><code>charm</code> segments the T1 into tissues (grey and white matter, CSF, skull, scalp…) and builds a mesh from them. This is the long step (~1–2 h) and the core of the physics: current conduction depends on this anatomy.</p>
-<figure><img src="_assets/tissues.png" alt="Tissue segmentation overlaid on the T1. Each colour is a conductivity class of the FEM model." loading="lazy"><figcaption>Tissue segmentation overlaid on the T1. Each colour is a conductivity class of the FEM model.</figcaption></figure>
+<figure><img src="assets/tissues.png" alt="Tissue segmentation overlaid on the T1. Each colour is a conductivity class of the FEM model." loading="lazy"><figcaption>Tissue segmentation overlaid on the T1. Each colour is a conductivity class of the FEM model.</figcaption></figure>
 <h2 id="step-3-electrodes-and-eeg-signal">Step 3 — Electrodes and EEG signal</h2>
 <p>Electrode positions come from the digitisation (EDF stores none). Their labels must match the EEG channels; mismatches are reported, not silently dropped.</p>
-<figure><img src="_assets/montage2d.png" alt="2D layout of the electrodes read from the digitisation." loading="lazy"><figcaption>2D layout of the electrodes read from the digitisation.</figcaption></figure>
+<figure><img src="assets/montage2d.png" alt="2D layout of the electrodes read from the digitisation." loading="lazy"><figcaption>2D layout of the electrodes read from the digitisation.</figcaption></figure>
 <p>The continuous recording is read, then band-pass filtered (1–40 Hz by default) and set to an average reference.</p>
-<figure><img src="_assets/raw_eeg.png" alt="A segment of the continuous EEG after filtering." loading="lazy"><figcaption>A segment of the continuous EEG after filtering.</figcaption></figure>
+<figure><img src="assets/raw_eeg.png" alt="A segment of the continuous EEG after filtering." loading="lazy"><figcaption>A segment of the continuous EEG after filtering.</figcaption></figure>
 <h2 id="step-4-the-evoked-response">Step 4 — The evoked response</h2>
 <p>Events cut the signal into epochs, averaged into an evoked response. That is what gets localised. The noise covariance is estimated from the pre-stimulus baseline.</p>
-<figure><img src="_assets/evoked_butterfly.png" alt="Evoked response, all electrodes overlaid (butterfly plot)." loading="lazy"><figcaption>Evoked response, all electrodes overlaid (butterfly plot).</figcaption></figure>
-<figure><img src="_assets/evoked_topomap.png" alt="Scalp topography of the potential at the response peak." loading="lazy"><figcaption>Scalp topography of the potential at the response peak.</figcaption></figure>
+<figure><img src="assets/evoked_butterfly.png" alt="Evoked response, all electrodes overlaid (butterfly plot)." loading="lazy"><figcaption>Evoked response, all electrodes overlaid (butterfly plot).</figcaption></figure>
+<figure><img src="assets/evoked_topomap.png" alt="Scalp topography of the potential at the response peak." loading="lazy"><figcaption>Scalp topography of the potential at the response peak.</figcaption></figure>
 <h2 id="step-5-coregistration">Step 5 — Coregistration</h2>
 <p>The electrodes are aligned to the mesh-derived scalp (ICP). This is the most sensitive point: a wrong pose shifts the sources without breaking anything downstream, so the residual is measured and plotted for a visual check.</p>
-<figure><img src="_assets/coreg3d.png" alt="Electrodes (red) sitting on the subject&#x27;s head surface after coregistration." loading="lazy"><figcaption>Electrodes (red) sitting on the subject's head surface after coregistration.</figcaption></figure>
+<figure><img src="assets/coreg3d.png" alt="Electrodes (red) sitting on the subject&#x27;s head surface after coregistration." loading="lazy"><figcaption>Electrodes (red) sitting on the subject's head surface after coregistration.</figcaption></figure>
 <h2 id="step-6-the-forward-model">Step 6 — The forward model</h2>
 <p>SimNIBS solves the forward problem by finite elements: for each cortical source point, the potential at each electrode. The source space is the central cortical surface.</p>
-<figure><img src="_assets/source_space.png" alt="Source space: points (blue) spread over the cortical surface (one in seven shown)." loading="lazy"><figcaption>Source space: points (blue) spread over the cortical surface (one in seven shown).</figcaption></figure>
+<figure><img src="assets/source_space.png" alt="Source space: points (blue) spread over the cortical surface (one in seven shown)." loading="lazy"><figcaption>Source space: points (blue) spread over the cortical surface (one in seven shown).</figcaption></figure>
 <h2 id="step-7-inverse-and-sources">Step 7 — Inverse and sources</h2>
 <p>Forward, covariance and EEG combine into an inverse operator (minimum-norm: dSPM here), applied to the evoked response to yield the source estimate on the cortex.</p>
-<figure><img src="_assets/sources_brain.png" alt="dSPM estimate at the peak, left hemisphere, lateral and medial views." loading="lazy"><figcaption>dSPM estimate at the peak, left hemisphere, lateral and medial views.</figcaption></figure>
-<figure><img src="_assets/source_timecourse.png" alt="Time course of the strongest source." loading="lazy"><figcaption>Time course of the strongest source.</figcaption></figure>
+<figure><img src="assets/sources_brain.png" alt="dSPM estimate at the peak, left hemisphere, lateral and medial views." loading="lazy"><figcaption>dSPM estimate at the peak, left hemisphere, lateral and medial views.</figcaption></figure>
+<figure><img src="assets/source_timecourse.png" alt="Time course of the strongest source." loading="lazy"><figcaption>Time course of the strongest source.</figcaption></figure>
 <p><code>result.peak</code> gives the location of the maximum in millimetres (MRI frame) and its latency — often the clinical deliverable. A per-subject HTML QC report is written as well.</p>
 <h2 id="where-to-go-next">Where to go next</h2>
 <p>The scenarios that follow change only a few arguments of this same call: already-preprocessed EEG, an external events file, or starting from a T1 without DICOM.</p>

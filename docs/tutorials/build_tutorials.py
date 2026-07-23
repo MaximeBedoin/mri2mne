@@ -931,7 +931,7 @@ def _index_filename(lang: str) -> str:
     return "index.html" if lang == "fr" else "index.en.html"
 
 
-def render_blocks(blocks, lang, assets_rel="_assets") -> str:
+def render_blocks(blocks, lang, assets_rel="assets") -> str:
     out = []
     for block in blocks:
         kind = block[0]
@@ -1162,10 +1162,10 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=here,
                     help="Output folder for the HTML site (default: this folder).")
     ap.add_argument("--skip-figures", action="store_true",
-                    help="Rebuild only the HTML, reuse existing _assets figures.")
+                    help="Rebuild only the HTML, reuse existing assets figures.")
     args = ap.parse_args()
 
-    assets = args.out / "_assets"
+    assets = args.out / "assets"
     raw_edf = args.raw_edf or (args.sample_dir / "eeg" / "sample_eeg.edf")
     vol_dir = args.vol_sample_dir or (args.sample_dir.parent / "sampleW")
     vol_subjects = args.vol_subjects_dir or (args.sample_dir.parent / "subjects")

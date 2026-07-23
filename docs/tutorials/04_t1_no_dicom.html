@@ -29,7 +29,7 @@
     <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
 )</code></pre>
 <p>La conversion DICOM→NIfTI est simplement sautée ; le T1 est copié tel quel et alimente <code>charm</code>. Toutes les étapes suivantes sont identiques.</p>
-<figure><img src="_assets/t1_ortho.png" alt="Le T1 fourni, tel qu&#x27;utilisé pour la segmentation." loading="lazy"><figcaption>Le T1 fourni, tel qu'utilisé pour la segmentation.</figcaption></figure>
+<figure><img src="assets/t1_ortho.png" alt="Le T1 fourni, tel qu&#x27;utilisé pour la segmentation." loading="lazy"><figcaption>Le T1 fourni, tel qu'utilisé pour la segmentation.</figcaption></figure>
 <aside class="note">Un T2 (<code>t2_path</code>) améliore nettement la segmentation du crâne si votre protocole en comporte un. L'anonymisation DICOM n'a plus lieu d'être ici — assurez-vous que le T1 est déjà dé-identifié avant de le partager.</aside>
   <nav class="pager"><a class="pn prev" href="03_external_events.html">← Événements dans un fichier externe</a><a class="pn next" href="05_volumetric.html">Route volumique (BEM / FreeSurfer) : le pipeline complet →</a></nav>
 </article>

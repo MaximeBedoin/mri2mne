@@ -42,20 +42,20 @@
 <span class="nm">print</span>(<span class="nm">result</span>.<span class="nm">source_estimate_file</span>, <span class="nm">result</span>.<span class="nm">peak</span>)  <span class="cm"># ...-vl.stc</span></code></pre>
 <h2 id="étape-1-lanatomie-dicom-t1">Étape 1 — L'anatomie (DICOM → T1)</h2>
 <p>Identique à la route corticale : le DICOM est anonymisé puis converti en un T1 NIfTI.</p>
-<figure><img src="_assets/t1_ortho.png" alt="Le T1 du sujet, coupes sagittale, coronale et axiale." loading="lazy"><figcaption>Le T1 du sujet, coupes sagittale, coronale et axiale.</figcaption></figure>
+<figure><img src="assets/t1_ortho.png" alt="Le T1 du sujet, coupes sagittale, coronale et axiale." loading="lazy"><figcaption>Le T1 du sujet, coupes sagittale, coronale et axiale.</figcaption></figure>
 <h2 id="étape-2-freesurfer-bem-à-trois-couches-wsl">Étape 2 — FreeSurfer + BEM à trois couches (WSL)</h2>
 <p>Sous WSL, <code>recon-all -autorecon1</code> puis l'algorithme <em>watershed</em> extraient trois surfaces frontières — crâne interne, crâne externe, peau — dont MNE fait un modèle BEM. Le watershed dépend du sujet : sur un T1 clinique bruité les surfaces peuvent s'auto-intersecter, d'où l'option <code>bem_strict</code>.</p>
-<figure><img src="_assets/vol_bem.png" alt="Les trois surfaces BEM (crâne interne en rouge, externe et peau en jaune) sur des coupes coronales du T1." loading="lazy"><figcaption>Les trois surfaces BEM (crâne interne en rouge, externe et peau en jaune) sur des coupes coronales du T1.</figcaption></figure>
+<figure><img src="assets/vol_bem.png" alt="Les trois surfaces BEM (crâne interne en rouge, externe et peau en jaune) sur des coupes coronales du T1." loading="lazy"><figcaption>Les trois surfaces BEM (crâne interne en rouge, externe et peau en jaune) sur des coupes coronales du T1.</figcaption></figure>
 <h2 id="étape-3-lespace-de-sources-volumique">Étape 3 — L'espace de sources volumique</h2>
 <p>Au lieu de points sur le cortex, une grille régulière remplit le volume délimité par le crâne interne. Le pas est réglé par <code>pos_mm</code> (5 mm ici).</p>
-<figure><img src="_assets/vol_source_space.png" alt="Grille de sources (magenta) remplissant le volume cérébral." loading="lazy"><figcaption>Grille de sources (magenta) remplissant le volume cérébral.</figcaption></figure>
+<figure><img src="assets/vol_source_space.png" alt="Grille de sources (magenta) remplissant le volume cérébral." loading="lazy"><figcaption>Grille de sources (magenta) remplissant le volume cérébral.</figcaption></figure>
 <h2 id="étape-4-la-coregistration">Étape 4 — La coregistration</h2>
 <p>Même principe que la route corticale, mais dans le repère IRM de FreeSurfer : les électrodes sont alignées sur la surface de peau issue du watershed.</p>
-<figure><img src="_assets/vol_coreg.png" alt="Électrodes (rouge) posées sur la peau FreeSurfer après coregistration." loading="lazy"><figcaption>Électrodes (rouge) posées sur la peau FreeSurfer après coregistration.</figcaption></figure>
+<figure><img src="assets/vol_coreg.png" alt="Électrodes (rouge) posées sur la peau FreeSurfer après coregistration." loading="lazy"><figcaption>Électrodes (rouge) posées sur la peau FreeSurfer après coregistration.</figcaption></figure>
 <h2 id="étape-5-forward-bem-inverse-et-sources">Étape 5 — Forward BEM, inverse et sources</h2>
 <p>Le BEM à trois couches donne le modèle direct sur la grille volumique ; l'inverse est en orientation libre (<code>loose=1.0</code>, adapté à un volume). L'estimation est sauvée en <code>-vl.stc</code> et se visualise sur le T1.</p>
-<figure><img src="_assets/vol_sources.png" alt="Estimation dSPM volumique au pic, superposée au T1 (vue orthogonale, croix sur le maximum)." loading="lazy"><figcaption>Estimation dSPM volumique au pic, superposée au T1 (vue orthogonale, croix sur le maximum).</figcaption></figure>
-<figure><img src="_assets/vol_timecourse.png" alt="Décours temporel de la source volumique la plus forte." loading="lazy"><figcaption>Décours temporel de la source volumique la plus forte.</figcaption></figure>
+<figure><img src="assets/vol_sources.png" alt="Estimation dSPM volumique au pic, superposée au T1 (vue orthogonale, croix sur le maximum)." loading="lazy"><figcaption>Estimation dSPM volumique au pic, superposée au T1 (vue orthogonale, croix sur le maximum).</figcaption></figure>
+<figure><img src="assets/vol_timecourse.png" alt="Décours temporel de la source volumique la plus forte." loading="lazy"><figcaption>Décours temporel de la source volumique la plus forte.</figcaption></figure>
 <aside class="note">La sortie diffère de la route corticale : un unique fichier <code>-vl.stc</code> (volume) au lieu de <code>-lh.stc</code> / <code>-rh.stc</code> (surface). <code>result.peak</code> reste la position du maximum en millimètres IRM.</aside>
   <nav class="pager"><a class="pn prev" href="04_t1_no_dicom.html">← Partir d'un T1, sans DICOM</a></nav>
 </article>
