@@ -1,7 +1,7 @@
 """Bridge to run Linux-only tools (FreeSurfer) from the Windows pipeline via WSL2.
 
 Same design as the SimNIBS subprocess bridge: the pipeline stays in the Windows
-`irm2mne` environment and shells out to a second world -- here a WSL2 distro --
+`mri2mne` environment and shells out to a second world -- here a WSL2 distro --
 for the one tool that only exists there. This module owns everything WSL: is it
 installed, path translation Windows<->WSL, running a command, and checking that
 FreeSurfer is reachable inside the distro.

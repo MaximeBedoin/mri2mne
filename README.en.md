@@ -16,6 +16,11 @@ code is only the orchestration between the two.
 Budget **~1.5 h per subject** for `charm` + **~20-40 min** for the FEM leadfield,
 instead of the 10-20 h of `recon-all`.
 
+> 📚 **Illustrated tutorials** — step by step, with the figure for **each stage**
+> (T1, tissue segmentation, EEG, evoked response, 3D coregistration, cortical
+> sources): **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)**
+> (once **GitHub Pages** is enabled). Otherwise, open `docs/tutorials/index.en.html` locally.
+
 ---
 
 ## Input → output, in one sentence
@@ -139,9 +144,9 @@ subject with the corresponding wrapper.
 
 The pipeline uses **two conda environments**:
 
-* **`irm2mne`** — drives everything (this repo). **Never** imports `simnibs`.
+* **`mri2mne`** — drives everything (this repo). **Never** imports `simnibs`.
 * **`simnibs_env`** — SimNIBS 4.6 + MNE. Runs the SimNIBS-specific steps, called
-  as **subprocesses** by `irm2mne`.
+  as **subprocesses** by `mri2mne`.
 
 This is what lets us use SimNIBS and MNE in their native versions without a
 dependency conflict (numpy in particular).
@@ -305,11 +310,11 @@ Check: `charm --version` should print `4.6.0`. The folder
 graphical installer from <https://simnibs.github.io> works too; you then need to
 `pip install mne` into its Python.)
 
-### 2. `irm2mne` — the driving environment
+### 2. `mri2mne` — the driving environment
 
 ```powershell
 conda env create -f environment.yml
-conda activate irm2mne
+conda activate mri2mne
 ```
 
 ### 3. Configuration
@@ -420,7 +425,7 @@ is the fiducials — which `charm` provides in subject space.
 Manual rework of a flagged subject:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 mne coreg --subject sub-001 --subjects-dir D:\data\derivatives\subjects
 ```
 
@@ -442,7 +447,7 @@ is. It's MNE + SimNIBS, therefore citable, with no home-grown rendering code.
 **Interactive window** (rotate/zoom/time with the mouse), from a script:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 python examples/open_source_viewer.py D:/derivatives patient01 --time 0.1
 ```
 
@@ -537,7 +542,7 @@ picklable with Windows's `spawn`).
 ## Tests
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 pytest tests -q
 ```
 
@@ -554,7 +559,7 @@ data.
 ```
 run_pipeline.py            Batch CLI entry point
 config.example.yaml        Commented configuration
-environment.yml            irm2mne environment (driver)
+environment.yml            mri2mne environment (driver)
 src/mri2mne/
   config.py                YAML loading and validation
   paths.py                 Subject tree + stage cache

@@ -5,8 +5,8 @@
 # config.yaml at simnibs_env's Scripts folder.
 #
 #   conda env create -f environment.yml
-#   conda activate irm2mne
-name: irm2mne
+#   conda activate mri2mne
+name: mri2mne
 
 channels:
   - conda-forge

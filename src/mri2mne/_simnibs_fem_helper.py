@@ -1,6 +1,6 @@
 """Standalone helper that runs inside SimNIBS' own Python (simnibs_env).
 
-The pipeline (in the irm2mne env) invokes this via subprocess because it needs
+The pipeline (in the mri2mne env) invokes this via subprocess because it needs
 both `simnibs` and `mne`, which live together only in the SimNIBS environment.
 It must therefore import nothing from the rest of mri2mne -- only simnibs, mne
 and numpy.

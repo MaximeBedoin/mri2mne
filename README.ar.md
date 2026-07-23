@@ -15,6 +15,11 @@ Windows، **دون FreeSurfer، دون WSL، دون Docker**. (يُوصف أدن
 احسب **~1.5 ساعة لكل مشارك** لأجل `charm` + **~20-40 دقيقة** لأجل leadfield الخاص بـ
 FEM، بدلاً من 10-20 ساعة لـ `recon-all`.
 
+> 📚 **دروس مصوّرة** — خطوة بخطوة، مع صورة **لكل مرحلة** (T1، تقسيم الأنسجة، EEG،
+> الاستجابة المُحرَّضة، التسجيل المشترك ثلاثي الأبعاد، المصادر القشرية):
+> **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)** (بالإنجليزية/الفرنسية، بعد تفعيل **GitHub Pages**).
+> أو افتح `docs/tutorials/index.en.html` محليًا.
+
 ---
 
 ## المدخل ← المخرج، في جملة واحدة
@@ -136,9 +141,9 @@ wrapper المقابل.
 
 يستخدم خط المعالجة **بيئتَي conda**:
 
-* **`irm2mne`** — يدير كل شيء (هذا المستودع). لا يستورد `simnibs` **أبداً**.
+* **`mri2mne`** — يدير كل شيء (هذا المستودع). لا يستورد `simnibs` **أبداً**.
 * **`simnibs_env`** — SimNIBS 4.6 + MNE. ينفِّذ الخطوات الخاصة بـ SimNIBS، ويستدعيها
-  `irm2mne` كـ **عمليات فرعية**.
+  `mri2mne` كـ **عمليات فرعية**.
 
 هذا ما يتيح استخدام SimNIBS وMNE بإصداريهما الأصيلين دون تعارض في التبعيات (لا سيما
 numpy).
@@ -301,11 +306,11 @@ pip install "mne>=1.6"     # مطلوب لـ make_forward (مخرج MNE)
 الرسومي الرسمي من <https://simnibs.github.io>؛ عندئذٍ يلزم `pip install mne` في
 بايثونه.)
 
-### 2. `irm2mne` — البيئة المُشغِّلة
+### 2. `mri2mne` — البيئة المُشغِّلة
 
 ```powershell
 conda env create -f environment.yml
-conda activate irm2mne
+conda activate mri2mne
 ```
 
 ### 3. الإعداد
@@ -411,7 +416,7 @@ digitisation/
 المعالجة اليدوية لمشارك مُعلَّم:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 mne coreg --subject sub-001 --subjects-dir D:\data\derivatives\subjects
 ```
 
@@ -432,7 +437,7 @@ mne coreg --subject sub-001 --subjects-dir D:\data\derivatives\subjects
 **نافذة تفاعلية** (تدوير/تكبير/زمن بالفأرة)، من سكربت:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 python examples/open_source_viewer.py D:/derivatives patient01 --time 0.1
 ```
 
@@ -523,7 +528,7 @@ Windows).
 ## الاختبارات
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 pytest tests -q
 ```
 
@@ -539,7 +544,7 @@ pytest tests -q
 ```
 run_pipeline.py            نقطة دخول CLI للدفعة
 config.example.yaml        إعداد معلَّق عليه
-environment.yml            بيئة irm2mne (المُشغِّل)
+environment.yml            بيئة mri2mne (المُشغِّل)
 src/mri2mne/
   config.py                تحميل YAML والتحقّق منه
   paths.py                 شجرة المشارك + تخبئة المراحل

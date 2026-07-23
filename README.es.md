@@ -15,6 +15,11 @@ repositorio es solo la orquestación entre ambos.
 Cuente **~1,5 h por sujeto** para `charm` + **~20-40 min** para el leadfield FEM,
 en lugar de las 10-20 h de `recon-all`.
 
+> 📚 **Tutoriales ilustrados** — paso a paso, con la figura de **cada etapa**
+> (T1, segmentación de tejidos, EEG, respuesta evocada, corregistro 3D, fuentes
+> corticales): **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)**
+> (EN/FR, una vez activado **GitHub Pages**). Si no, abra `docs/tutorials/index.en.html` localmente.
+
 ---
 
 ## Entrada → salida, en una frase
@@ -138,9 +143,9 @@ por sujeto con el wrapper correspondiente.
 
 El pipeline usa **dos entornos conda**:
 
-* **`irm2mne`** — controla todo (este repositorio). **Nunca** importa `simnibs`.
+* **`mri2mne`** — controla todo (este repositorio). **Nunca** importa `simnibs`.
 * **`simnibs_env`** — SimNIBS 4.6 + MNE. Ejecuta los pasos propios de SimNIBS,
-  invocados como **subprocesos** por `irm2mne`.
+  invocados como **subprocesos** por `mri2mne`.
 
 Esto es lo que permite usar SimNIBS y MNE en sus versiones nativas sin conflicto
 de dependencias (numpy en particular).
@@ -307,11 +312,11 @@ Verifique: `charm --version` debe mostrar `4.6.0`. La carpeta
 gráfico oficial de <https://simnibs.github.io> también funciona; entonces hay que
 hacer `pip install mne` en su Python.)
 
-### 2. `irm2mne` — el entorno que controla
+### 2. `mri2mne` — el entorno que controla
 
 ```powershell
 conda env create -f environment.yml
-conda activate irm2mne
+conda activate mri2mne
 ```
 
 ### 3. Configuración
@@ -423,7 +428,7 @@ los puntos cerca de la superficie. Lo que fija el ajuste son los fiduciales — 
 Retoma manual de un sujeto señalado:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 mne coreg --subject sub-001 --subjects-dir D:\data\derivatives\subjects
 ```
 
@@ -446,7 +451,7 @@ por tanto citable, sin código de renderizado casero.
 **Ventana interactiva** (rotar/zoom/tiempo con el ratón), desde un script:
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 python examples/open_source_viewer.py D:/derivatives patient01 --time 0.1
 ```
 
@@ -544,7 +549,7 @@ SimNIBS no es picklable con el `spawn` de Windows).
 ## Pruebas
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 pytest tests -q
 ```
 
@@ -561,7 +566,7 @@ visualización. Las etapas pesadas (charm, leadfield FEM) se validan con
 ```
 run_pipeline.py            Punto de entrada CLI del lote
 config.example.yaml        Configuración comentada
-environment.yml            Entorno irm2mne (controlador)
+environment.yml            Entorno mri2mne (controlador)
 src/mri2mne/
   config.py                Carga y validación YAML
   paths.py                 Árbol del sujeto + caché de etapas

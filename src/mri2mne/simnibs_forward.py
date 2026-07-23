@@ -1,6 +1,6 @@
 """FEM EEG forward via SimNIBS, driven from the pipeline environment.
 
-This is the pipeline-side (irm2mne) half. It prepares the inputs, then hands
+This is the pipeline-side (mri2mne) half. It prepares the inputs, then hands
 off to `_simnibs_fem_helper.py`, which runs inside SimNIBS' own Python because
 the leadfield solver and its MNE bridge live only there. The helper writes a
 `-fwd.fif`; we read it back here.

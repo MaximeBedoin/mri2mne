@@ -16,6 +16,11 @@ n'est que l'orchestration entre les deux.
 Compter **~1h30 par sujet** pour `charm` + **~20-40 min** pour le leadfield FEM,
 au lieu des 10-20 h de `recon-all`.
 
+> 📚 **Tutoriels illustrés** — pas-à-pas, avec la figure de **chaque étape**
+> (T1, segmentation des tissus, EEG, réponse évoquée, coregistration 3D, sources
+> sur le cortex) : **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/)**
+> (une fois **GitHub Pages** activé). Sinon, ouvrez `docs/tutorials/index.html` en local.
+
 ---
 
 ## Entrée → sortie, en une phrase
@@ -139,9 +144,9 @@ sujet avec le wrapper correspondant.
 
 Le pipeline utilise **deux environnements conda** :
 
-* **`irm2mne`** — pilote tout (ce dépôt). N'importe **jamais** `simnibs`.
+* **`mri2mne`** — pilote tout (ce dépôt). N'importe **jamais** `simnibs`.
 * **`simnibs_env`** — SimNIBS 4.6 + MNE. Exécute les étapes propres à SimNIBS,
-  appelées en **sous-processus** par `irm2mne`.
+  appelées en **sous-processus** par `mri2mne`.
 
 C'est ce qui permet d'utiliser SimNIBS et MNE dans leurs versions natives sans
 conflit de dépendances (numpy notamment).
@@ -306,11 +311,11 @@ Vérifier : `charm --version` doit afficher `4.6.0`. Le dossier
 (L'installateur graphique officiel de <https://simnibs.github.io> fonctionne
 aussi ; il faut alors `pip install mne` dans sa Python.)
 
-### 2. `irm2mne` — l'environnement qui pilote
+### 2. `mri2mne` — l'environnement qui pilote
 
 ```powershell
 conda env create -f environment.yml
-conda activate irm2mne
+conda activate mri2mne
 ```
 
 ### 3. Configuration
@@ -421,7 +426,7 @@ Ce qui pinne la pose, ce sont les fiduciaux — que `charm` fournit en espace su
 Reprise manuelle d'un sujet signalé :
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 mne coreg --subject sub-001 --subjects-dir D:\data\derivatives\subjects
 ```
 
@@ -444,7 +449,7 @@ donc citable, sans code de rendu maison.
 **Fenêtre interactive** (rotation/zoom/temps à la souris), depuis un script :
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 python examples/open_source_viewer.py D:/derivatives patient01 --time 0.1
 ```
 
@@ -540,7 +545,7 @@ parallélisation SimNIBS n'est pas picklable avec le `spawn` de Windows).
 ## Tests
 
 ```powershell
-conda activate irm2mne
+conda activate mri2mne
 pytest tests -q
 ```
 
@@ -557,7 +562,7 @@ des arguments du wrapper et le pont SimNIBS→FreeSurfer de la visualisation. Le
 ```
 run_pipeline.py            Point d'entrée CLI du lot
 config.example.yaml        Configuration commentée
-environment.yml            Environnement irm2mne (pilote)
+environment.yml            Environnement mri2mne (pilote)
 src/mri2mne/
   config.py                Chargement et validation YAML
   paths.py                 Arborescence sujet + cache d'étapes
