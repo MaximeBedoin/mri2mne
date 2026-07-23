@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EEG déjà préprocessé — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">mri2mne</a>
+  <div class="spacer"></div>
+  <a class="home" href="index.html">Accueil</a>
+  <a class="lang" href="02_preprocessed_eeg.en.html">EN</a>
+</header>
+<main>
+  <h1>EEG déjà préprocessé</h1>
+  
+<article>
+  <p class="lead">Votre EEG est déjà filtré et référencé (par ex. sorti d'un pipeline maison ou de MNE) ? Il faut empêcher le pipeline de le refaire.</p>
+  <h2 id="le-principe">Le principe</h2>
+<p>Refiltrer un signal déjà filtré déforme les basses fréquences et fausse la covariance ; re-référencer deux fois est une erreur silencieuse. On neutralise les deux étapes.</p>
+<h2 id="les-arguments">Les arguments</h2>
+<p>Mettre <code>l_freq</code> et <code>h_freq</code> à <code>None</code> désactive le filtrage ; <code>eeg_reference=None</code> conserve votre référence.</p>
+<pre class="code"><code><span class="nm">result</span> = <span class="nm">reconstruct_sources</span>(
+    <span class="nm">subject</span>=<span class="st">&quot;sample&quot;</span>,
+    <span class="nm">output_dir</span>=<span class="st">&quot;D:/derivatives&quot;</span>,
+    <span class="nm">t1_path</span>=<span class="st">&quot;D:/anat/sample_T1w.nii.gz&quot;</span>,
+    <span class="nm">eeg_file</span>=<span class="st">&quot;D:/eeg/sample_clean.fif&quot;</span>,   <span class="cm"># deja preprocesse</span>
+    <span class="nm">digitization</span>=<span class="st">&quot;D:/dig/sample.elc&quot;</span>,
+    <span class="nm">simnibs_bin_dir</span>=<span class="st">&quot;C:/Users/me/SimNIBS-4.5/bin&quot;</span>,
+    <span class="nm">l_freq</span>=<span class="kw">None</span>, <span class="nm">h_freq</span>=<span class="kw">None</span>,             <span class="cm"># &lt;- pas de refiltrage</span>
+    <span class="nm">eeg_reference</span>=<span class="kw">None</span>,                   <span class="cm"># &lt;- garder la reference</span>
+    <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
+)</code></pre>
+<aside class="note">Si vous avez seulement filtré (sans re-référencer), gardez <code>eeg_reference="average"</code>. La référence moyenne commune, exprimée comme projection, est recommandée pour la modélisation de sources.</aside>
+<p>Le reste est identique au tutoriel complet : la réponse évoquée et les sources se calculent de la même façon.</p>
+<figure><img src="_assets/evoked_butterfly.png" alt="La réponse évoquée obtenue à partir de l&#x27;EEG fourni." loading="lazy"><figcaption>La réponse évoquée obtenue à partir de l'EEG fourni.</figcaption></figure>
+  <nav class="pager"><a class="pn prev" href="01_end_to_end.html">← Du DICOM aux sources : le pipeline complet</a><a class="pn next" href="03_external_events.html">Événements dans un fichier externe →</a></nav>
+</article>
+<aside class="toc">
+  <div class="toc-title">Sur cette page</div>
+  <ul><li><a href="#le-principe">Le principe</a></li><li><a href="#les-arguments">Les arguments</a></li></ul>
+</aside>
+</main>
+<footer>Figures générées par le pipeline sur le sujet d'exemple. Reproductible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>

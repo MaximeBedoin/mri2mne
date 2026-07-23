@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Événements dans un fichier externe — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">mri2mne</a>
+  <div class="spacer"></div>
+  <a class="home" href="index.html">Accueil</a>
+  <a class="lang" href="03_external_events.en.html">EN</a>
+</header>
+<main>
+  <h1>Événements dans un fichier externe</h1>
+  
+<article>
+  <p class="lead">Vos marqueurs ne sont pas dans l'EEG mais dans un fichier à part (par ex. un <code>-eve.fif</code> MNE, ou un tableau que vous construisez). Voici comment les fournir.</p>
+  <h2 id="trois-façons-de-fournir-les-événements">Trois façons de fournir les événements</h2>
+<p>L'argument <code>events</code> accepte un chemin, le mot-clé <code>"find"</code>, ou un tableau NumPy déjà en mémoire.</p>
+<h3>1. Un fichier MNE <code>-eve.fif</code></h3>
+<pre class="code"><code><span class="nm">result</span> = <span class="nm">reconstruct_sources</span>(
+    <span class="nm">subject</span>=<span class="st">&quot;sample&quot;</span>, <span class="nm">output_dir</span>=<span class="st">&quot;D:/derivatives&quot;</span>,
+    <span class="nm">t1_path</span>=<span class="st">&quot;D:/anat/sample_T1w.nii.gz&quot;</span>,
+    <span class="nm">eeg_file</span>=<span class="st">&quot;D:/eeg/sample.edf&quot;</span>,
+    <span class="nm">digitization</span>=<span class="st">&quot;D:/dig/sample.elc&quot;</span>,
+    <span class="nm">simnibs_bin_dir</span>=<span class="st">&quot;C:/Users/me/SimNIBS-4.5/bin&quot;</span>,
+    <span class="nm">events</span>=<span class="st">&quot;D:/eeg/sample-eve.fif&quot;</span>,       <span class="cm"># &lt;- fichier externe</span>
+    <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>, <span class="st">&quot;aud_r&quot;</span>: <span class="nu">2</span>},    <span class="cm"># conditions a garder</span>
+    <span class="nm">tmin</span>=-<span class="nu">0.2</span>, <span class="nm">tmax</span>=<span class="nu">0.5</span>,
+)</code></pre>
+<p>Le fichier suit le format MNE : trois colonnes (échantillon, valeur précédente, code). <code>event_id</code> choisit les codes à épocher et les nomme.</p>
+<h3>2. Détection depuis la voie trigger</h3>
+<p>Si les impulsions sont sur une voie de stimulation dans l'EEG, <code>"find"</code> appelle <code>mne.find_events</code>.</p>
+<pre class="code"><code><span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>}</code></pre>
+<h3>3. Un tableau construit à la main</h3>
+<p>Utile quand les temps viennent d'un journal comportemental. Colonnes : échantillon, 0, code.</p>
+<pre class="code"><code><span class="kw">import</span> <span class="nm">numpy</span> <span class="kw">as</span> <span class="nm">np</span>
+<span class="nm">events</span> = <span class="nm">np</span>.<span class="nm">array</span>([[<span class="nu">500</span>, <span class="nu">0</span>, <span class="nu">1</span>],
+                   [<span class="nu">1200</span>, <span class="nu">0</span>, <span class="nu">1</span>],
+                   [<span class="nu">2100</span>, <span class="nu">0</span>, <span class="nu">2</span>]])
+<span class="nm">reconstruct_sources</span>(..., <span class="nm">events</span>=<span class="nm">events</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>, <span class="st">&quot;aud_r&quot;</span>: <span class="nu">2</span>})</code></pre>
+<aside class="note">Sans aucun événement (<code>events=None</code>), tout l'enregistrement est traité comme une seule époque — pratique pour localiser une réponse déjà moyennée ou un segment découpé à la main (voir le scénario correspondant).</aside>
+<figure><img src="_assets/evoked_topomap.png" alt="Topographie au pic, une fois les époques moyennées." loading="lazy"><figcaption>Topographie au pic, une fois les époques moyennées.</figcaption></figure>
+  <nav class="pager"><a class="pn prev" href="02_preprocessed_eeg.html">← EEG déjà préprocessé</a><a class="pn next" href="04_t1_no_dicom.html">Partir d'un T1, sans DICOM →</a></nav>
+</article>
+<aside class="toc">
+  <div class="toc-title">Sur cette page</div>
+  <ul><li><a href="#trois-façons-de-fournir-les-événements">Trois façons de fournir les événements</a></li></ul>
+</aside>
+</main>
+<footer>Figures générées par le pipeline sur le sujet d'exemple. Reproductible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>

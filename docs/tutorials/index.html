@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutoriels mri2mne — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">mri2mne</a>
+  <div class="spacer"></div>
+  
+  <a class="lang" href="index.en.html">EN</a>
+</header>
+<main>
+  <h1>Tutoriels mri2mne</h1>
+  
+<article>
+  <p class="lead">Des tutoriels pas-à-pas, dans l'esprit de ceux de MNE : chaque étape du pipeline est montrée avec la figure qu'elle produit, sur un même sujet d'exemple.</p>
+  <div class="cards"><a class="card" href="01_end_to_end.html"><span class="num">01</span><span class="ct"><strong>Du DICOM aux sources : le pipeline complet</strong><span>Le parcours nominal : une IRM DICOM et un EEG entrent, une estimation de sources corticales sort. On visualise chaque étape sur le sujet d'exemple <code>sample</code>.</span></span></a><a class="card" href="02_preprocessed_eeg.html"><span class="num">02</span><span class="ct"><strong>EEG déjà préprocessé</strong><span>Votre EEG est déjà filtré et référencé (par ex. sorti d'un pipeline maison ou de MNE) ? Il faut empêcher le pipeline de le refaire.</span></span></a><a class="card" href="03_external_events.html"><span class="num">03</span><span class="ct"><strong>Événements dans un fichier externe</strong><span>Vos marqueurs ne sont pas dans l'EEG mais dans un fichier à part (par ex. un <code>-eve.fif</code> MNE, ou un tableau que vous construisez). Voici comment les fournir.</span></span></a><a class="card" href="04_t1_no_dicom.html"><span class="num">04</span><span class="ct"><strong>Partir d'un T1, sans DICOM</strong><span>Vous avez déjà un T1 en NIfTI (dé-identifié, ou issu d'un autre logiciel) et pas les DICOM d'origine. Le pipeline part directement de cette image.</span></span></a><a class="card" href="05_volumetric.html"><span class="num">05</span><span class="ct"><strong>Route volumique (BEM / FreeSurfer) : le pipeline complet</strong><span>L'alternative à la route corticale : FreeSurfer (via WSL) → BEM à trois couches → espace de sources <strong>volumique</strong> → estimation de sources dans tout le volume cérébral. Mêmes entrées, un maillage de tête différent.</span></span></a></div>
+</article>
+</main>
+<footer>Figures générées par le pipeline sur le sujet d'exemple. Reproductible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>

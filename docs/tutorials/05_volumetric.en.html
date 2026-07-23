@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Volumetric route (BEM / FreeSurfer): the complete pipeline — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.en.html">mri2mne</a>
+  <div class="spacer"></div>
+  <a class="home" href="index.en.html">Home</a>
+  <a class="lang" href="05_volumetric.html">FR</a>
+</header>
+<main>
+  <h1>Volumetric route (BEM / FreeSurfer): the complete pipeline</h1>
+  
+<article>
+  <p class="lead">The alternative to the cortical route: FreeSurfer (via WSL) → three-layer BEM → <strong>volumetric</strong> source space → a source estimate throughout the brain volume. Same inputs, a different head model.</p>
+  <aside class="note">Figures produced by the volumetric pipeline on the <code>sampleW</code> subject (same MRI as the cortical tutorial). This route requires <strong>WSL2 + FreeSurfer</strong>; the EEG half is identical to the cortical tutorial.</aside>
+<h2 id="cortical-or-volumetric">Cortical or volumetric?</h2>
+<p>The cortical route (SimNIBS FEM, Windows-native) constrains sources to the cortical surface. The volumetric route fills the whole brain volume with a regular grid — useful for deep or subcortical sources — at the cost of FreeSurfer under WSL and a three-layer BEM model.</p>
+<h2 id="the-single-call">The single call</h2>
+<p>A separate function, <code>reconstruct_sources_volumetric</code>, with the arguments specific to FreeSurfer and the BEM.</p>
+<pre class="code"><code><span class="kw">from</span> <span class="nm">mri2mne</span>.<span class="nm">wrapper</span> <span class="kw">import</span> <span class="nm">reconstruct_sources_volumetric</span>
+
+<span class="nm">result</span> = <span class="nm">reconstruct_sources_volumetric</span>(
+    <span class="nm">subject</span>=<span class="st">&quot;sampleW&quot;</span>,
+    <span class="nm">output_dir</span>=<span class="st">&quot;D:/derivatives&quot;</span>,
+    <span class="nm">dicom_dir</span>=<span class="st">&quot;D:/dicom/sample&quot;</span>,          <span class="cm"># or t1_path=...</span>
+    <span class="nm">eeg_file</span>=<span class="st">&quot;D:/eeg/sample.edf&quot;</span>,
+    <span class="nm">digitization</span>=<span class="st">&quot;D:/dig/sample.elc&quot;</span>,
+    <span class="nm">wsl_distro</span>=<span class="st">&quot;Ubuntu&quot;</span>,                  <span class="cm"># WSL distro with FreeSurfer</span>
+    <span class="nm">freesurfer_home</span>=<span class="st">&quot;/usr/local/freesurfer&quot;</span>,
+    <span class="nm">pos_mm</span>=<span class="nu">5.0</span>,                           <span class="cm"># grid spacing (mm)</span>
+    <span class="nm">conductivity</span>=(<span class="nu">0.3</span>, <span class="nu">0.006</span>, <span class="nu">0.3</span>),       <span class="cm"># brain, skull, scalp</span>
+    <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
+    <span class="nm">inverse_method</span>=<span class="st">&quot;dSPM&quot;</span>, <span class="nm">snr</span>=<span class="nu">3.0</span>,
+    <span class="nm">loose</span>=<span class="nu">1.0</span>,                            <span class="cm"># free orientation (volume)</span>
+)
+<span class="nm">print</span>(<span class="nm">result</span>.<span class="nm">source_estimate_file</span>, <span class="nm">result</span>.<span class="nm">peak</span>)  <span class="cm"># ...-vl.stc</span></code></pre>
+<h2 id="step-1-anatomy-dicom-t1">Step 1 — Anatomy (DICOM → T1)</h2>
+<p>Identical to the cortical route: the DICOM is anonymised then converted to a T1 NIfTI.</p>
+<figure><img src="_assets/t1_ortho.png" alt="The subject&#x27;s T1, sagittal, coronal and axial slices." loading="lazy"><figcaption>The subject's T1, sagittal, coronal and axial slices.</figcaption></figure>
+<h2 id="step-2-freesurfer-three-layer-bem-wsl">Step 2 — FreeSurfer + three-layer BEM (WSL)</h2>
+<p>Under WSL, <code>recon-all -autorecon1</code> then the <em>watershed</em> algorithm extract three boundary surfaces — inner skull, outer skull, skin — that MNE turns into a BEM model. Watershed is subject-dependent: on a noisy clinical T1 the surfaces can self-intersect, hence the <code>bem_strict</code> option.</p>
+<figure><img src="_assets/vol_bem.png" alt="The three BEM surfaces (inner skull in red, outer skull and skin in yellow) over coronal T1 slices." loading="lazy"><figcaption>The three BEM surfaces (inner skull in red, outer skull and skin in yellow) over coronal T1 slices.</figcaption></figure>
+<h2 id="step-3-the-volumetric-source-space">Step 3 — The volumetric source space</h2>
+<p>Instead of points on the cortex, a regular grid fills the volume bounded by the inner skull. The spacing is set by <code>pos_mm</code> (5 mm here).</p>
+<figure><img src="_assets/vol_source_space.png" alt="Source grid (magenta) filling the brain volume." loading="lazy"><figcaption>Source grid (magenta) filling the brain volume.</figcaption></figure>
+<h2 id="step-4-coregistration">Step 4 — Coregistration</h2>
+<p>Same principle as the cortical route, but in FreeSurfer's MRI frame: the electrodes are aligned to the watershed skin surface.</p>
+<figure><img src="_assets/vol_coreg.png" alt="Electrodes (red) on the FreeSurfer skin surface after coregistration." loading="lazy"><figcaption>Electrodes (red) on the FreeSurfer skin surface after coregistration.</figcaption></figure>
+<h2 id="step-5-bem-forward-inverse-and-sources">Step 5 — BEM forward, inverse and sources</h2>
+<p>The three-layer BEM gives the forward model on the volume grid; the inverse uses free orientation (<code>loose=1.0</code>, suited to a volume). The estimate is saved as <code>-vl.stc</code> and is visualised on the T1.</p>
+<figure><img src="_assets/vol_sources.png" alt="Volumetric dSPM estimate at the peak, overlaid on the T1 (orthogonal view, crosshair on the maximum)." loading="lazy"><figcaption>Volumetric dSPM estimate at the peak, overlaid on the T1 (orthogonal view, crosshair on the maximum).</figcaption></figure>
+<figure><img src="_assets/vol_timecourse.png" alt="Time course of the strongest volume source." loading="lazy"><figcaption>Time course of the strongest volume source.</figcaption></figure>
+<aside class="note">The output differs from the cortical route: a single <code>-vl.stc</code> file (volume) instead of <code>-lh.stc</code> / <code>-rh.stc</code> (surface). <code>result.peak</code> is still the location of the maximum in MRI millimetres.</aside>
+  <nav class="pager"><a class="pn prev" href="04_t1_no_dicom.en.html">← Start from a T1, without DICOM</a></nav>
+</article>
+<aside class="toc">
+  <div class="toc-title">On this page</div>
+  <ul><li><a href="#cortical-or-volumetric">Cortical or volumetric?</a></li><li><a href="#the-single-call">The single call</a></li><li><a href="#step-1-anatomy-dicom-t1">Step 1 — Anatomy (DICOM → T1)</a></li><li><a href="#step-2-freesurfer-three-layer-bem-wsl">Step 2 — FreeSurfer + three-layer BEM (WSL)</a></li><li><a href="#step-3-the-volumetric-source-space">Step 3 — The volumetric source space</a></li><li><a href="#step-4-coregistration">Step 4 — Coregistration</a></li><li><a href="#step-5-bem-forward-inverse-and-sources">Step 5 — BEM forward, inverse and sources</a></li></ul>
+</aside>
+</main>
+<footer>Figures generated by the pipeline on the example subject. Reproducible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>

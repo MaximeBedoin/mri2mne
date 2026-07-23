@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Du DICOM aux sources : le pipeline complet — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">mri2mne</a>
+  <div class="spacer"></div>
+  <a class="home" href="index.html">Accueil</a>
+  <a class="lang" href="01_end_to_end.en.html">EN</a>
+</header>
+<main>
+  <h1>Du DICOM aux sources : le pipeline complet</h1>
+  
+<article>
+  <p class="lead">Le parcours nominal : une IRM DICOM et un EEG entrent, une estimation de sources corticales sort. On visualise chaque étape sur le sujet d'exemple <code>sample</code>.</p>
+  <aside class="note">Toutes les figures de cette page ont été produites par le pipeline sur le sujet <code>sample</code> livré avec le projet. Rien à recalculer pour lire le tutoriel.</aside>
+<h2 id="lappel-unique">L'appel unique</h2>
+<p>Tout le pipeline de surface (route FEM SimNIBS, native Windows) tient dans un appel. Chaque argument correspond à une étape détaillée plus bas.</p>
+<pre class="code"><code><span class="kw">from</span> <span class="nm">mri2mne</span>.<span class="nm">wrapper</span> <span class="kw">import</span> <span class="nm">reconstruct_sources</span>
+
+<span class="nm">result</span> = <span class="nm">reconstruct_sources</span>(
+    <span class="nm">subject</span>=<span class="st">&quot;sample&quot;</span>,
+    <span class="nm">output_dir</span>=<span class="st">&quot;D:/derivatives&quot;</span>,
+    <span class="nm">dicom_dir</span>=<span class="st">&quot;D:/dicom/sample&quot;</span>,         <span class="cm"># IRM : un dossier DICOM</span>
+    <span class="nm">eeg_file</span>=<span class="st">&quot;D:/eeg/sample.edf&quot;</span>,        <span class="cm"># EEG a localiser</span>
+    <span class="nm">digitization</span>=<span class="st">&quot;D:/dig/sample.elc&quot;</span>,    <span class="cm"># positions des electrodes</span>
+    <span class="nm">simnibs_bin_dir</span>=<span class="st">&quot;C:/Users/me/SimNIBS-4.5/bin&quot;</span>,
+    <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
+    <span class="nm">tmin</span>=-<span class="nu">0.2</span>, <span class="nm">tmax</span>=<span class="nu">0.5</span>, <span class="nm">baseline</span>=(<span class="kw">None</span>, <span class="nu">0.0</span>),
+    <span class="nm">inverse_method</span>=<span class="st">&quot;dSPM&quot;</span>, <span class="nm">snr</span>=<span class="nu">3.0</span>,
+)
+<span class="nm">print</span>(<span class="nm">result</span>.<span class="nm">source_estimate_file</span>, <span class="nm">result</span>.<span class="nm">peak</span>)</code></pre>
+<h2 id="étape-1-lanatomie-dicom-t1">Étape 1 — L'anatomie (DICOM → T1)</h2>
+<p>Le dossier DICOM est anonymisé puis converti en un unique volume T1 NIfTI. C'est la seule image dont le reste du pipeline a besoin.</p>
+<figure><img src="_assets/t1_ortho.png" alt="Le T1 du sujet &lt;code&gt;sample&lt;/code&gt;, coupes sagittale, coronale et axiale." loading="lazy"><figcaption>Le T1 du sujet <code>sample</code>, coupes sagittale, coronale et axiale.</figcaption></figure>
+<h2 id="étape-2-le-modèle-de-tête-simnibs-charm">Étape 2 — Le modèle de tête (SimNIBS charm)</h2>
+<p><code>charm</code> segmente le T1 en tissus (matière grise et blanche, LCR, crâne, scalp…) et en construit un maillage. C'est l'étape longue (~1–2 h) et le cœur de la physique : la conduction du courant dépend de cette anatomie.</p>
+<figure><img src="_assets/tissues.png" alt="Segmentation en tissus superposée au T1. Chaque couleur est une classe de conductivité du modèle FEM." loading="lazy"><figcaption>Segmentation en tissus superposée au T1. Chaque couleur est une classe de conductivité du modèle FEM.</figcaption></figure>
+<h2 id="étape-3-électrodes-et-signal-eeg">Étape 3 — Électrodes et signal EEG</h2>
+<p>Les positions d'électrodes viennent de la digitisation (l'EDF n'en contient pas). Leurs libellés doivent correspondre aux canaux de l'EEG ; les écarts sont signalés, pas ignorés.</p>
+<figure><img src="_assets/montage2d.png" alt="Disposition 2D des électrodes lues depuis la digitisation." loading="lazy"><figcaption>Disposition 2D des électrodes lues depuis la digitisation.</figcaption></figure>
+<p>Le signal continu est lu puis filtré (par défaut 1–40 Hz) et re-référencé en moyenne commune.</p>
+<figure><img src="_assets/raw_eeg.png" alt="Extrait de l&#x27;EEG continu après filtrage." loading="lazy"><figcaption>Extrait de l'EEG continu après filtrage.</figcaption></figure>
+<h2 id="étape-4-la-réponse-évoquée">Étape 4 — La réponse évoquée</h2>
+<p>Les événements découpent le signal en époques, moyennées en une réponse évoquée. C'est elle qu'on localise. La covariance du bruit est estimée sur la ligne de base pré-stimulus.</p>
+<figure><img src="_assets/evoked_butterfly.png" alt="Réponse évoquée, toutes électrodes superposées (« butterfly »)." loading="lazy"><figcaption>Réponse évoquée, toutes électrodes superposées (« butterfly »).</figcaption></figure>
+<figure><img src="_assets/evoked_topomap.png" alt="Topographie du potentiel au pic de la réponse." loading="lazy"><figcaption>Topographie du potentiel au pic de la réponse.</figcaption></figure>
+<h2 id="étape-5-la-coregistration">Étape 5 — La coregistration</h2>
+<p>On aligne les électrodes sur le scalp issu du maillage (ICP). C'est le point le plus sensible : une pose fausse déplace les sources sans rien casser en aval, donc le résidu est mesuré et figuré pour contrôle visuel.</p>
+<figure><img src="_assets/coreg3d.png" alt="Électrodes (rouge) posées sur la surface de tête du sujet après coregistration." loading="lazy"><figcaption>Électrodes (rouge) posées sur la surface de tête du sujet après coregistration.</figcaption></figure>
+<h2 id="étape-6-le-modèle-direct-forward">Étape 6 — Le modèle direct (forward)</h2>
+<p>SimNIBS résout le problème direct par éléments finis : pour chaque point source du cortex, quel potentiel à chaque électrode. L'espace des sources est la surface corticale centrale.</p>
+<figure><img src="_assets/source_space.png" alt="Espace des sources : points (bleu) répartis sur la surface corticale (un sur sept affiché)." loading="lazy"><figcaption>Espace des sources : points (bleu) répartis sur la surface corticale (un sur sept affiché).</figcaption></figure>
+<h2 id="étape-7-linverse-et-les-sources">Étape 7 — L'inverse et les sources</h2>
+<p>Forward, covariance et EEG se combinent en un opérateur inverse (norme minimale : dSPM ici), appliqué à la réponse évoquée pour obtenir l'estimation de sources sur le cortex.</p>
+<figure><img src="_assets/sources_brain.png" alt="Estimation dSPM au pic, hémisphère gauche, vues latérale et médiale." loading="lazy"><figcaption>Estimation dSPM au pic, hémisphère gauche, vues latérale et médiale.</figcaption></figure>
+<figure><img src="_assets/source_timecourse.png" alt="Décours temporel de la source la plus forte." loading="lazy"><figcaption>Décours temporel de la source la plus forte.</figcaption></figure>
+<p><code>result.peak</code> donne la position du maximum en millimètres (repère IRM) et son instant — souvent le livrable clinique. Un rapport QC HTML est aussi écrit par sujet.</p>
+<h2 id="et-ensuite">Et ensuite</h2>
+<p>Les scénarios suivants ne changent que quelques arguments de ce même appel : EEG déjà préprocessé, fichier d'événements externe, ou départ d'un T1 sans DICOM.</p>
+  <nav class="pager"><span></span><a class="pn next" href="02_preprocessed_eeg.html">EEG déjà préprocessé →</a></nav>
+</article>
+<aside class="toc">
+  <div class="toc-title">Sur cette page</div>
+  <ul><li><a href="#lappel-unique">L'appel unique</a></li><li><a href="#étape-1-lanatomie-dicom-t1">Étape 1 — L'anatomie (DICOM → T1)</a></li><li><a href="#étape-2-le-modèle-de-tête-simnibs-charm">Étape 2 — Le modèle de tête (SimNIBS charm)</a></li><li><a href="#étape-3-électrodes-et-signal-eeg">Étape 3 — Électrodes et signal EEG</a></li><li><a href="#étape-4-la-réponse-évoquée">Étape 4 — La réponse évoquée</a></li><li><a href="#étape-5-la-coregistration">Étape 5 — La coregistration</a></li><li><a href="#étape-6-le-modèle-direct-forward">Étape 6 — Le modèle direct (forward)</a></li><li><a href="#étape-7-linverse-et-les-sources">Étape 7 — L'inverse et les sources</a></li><li><a href="#et-ensuite">Et ensuite</a></li></ul>
+</aside>
+</main>
+<footer>Figures générées par le pipeline sur le sujet d'exemple. Reproductible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>

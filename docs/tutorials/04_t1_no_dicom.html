@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partir d&#x27;un T1, sans DICOM — mri2mne</title>
+<link rel="stylesheet" href="tutorials.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html">mri2mne</a>
+  <div class="spacer"></div>
+  <a class="home" href="index.html">Accueil</a>
+  <a class="lang" href="04_t1_no_dicom.en.html">EN</a>
+</header>
+<main>
+  <h1>Partir d'un T1, sans DICOM</h1>
+  
+<article>
+  <p class="lead">Vous avez déjà un T1 en NIfTI (dé-identifié, ou issu d'un autre logiciel) et pas les DICOM d'origine. Le pipeline part directement de cette image.</p>
+  <h2 id="un-seul-argument-change">Un seul argument change</h2>
+<p>On donne <code>t1_path</code> au lieu de <code>dicom_dir</code>. Exactement un des deux est requis — fournir les deux (ou aucun) lève une erreur immédiate.</p>
+<pre class="code"><code><span class="nm">result</span> = <span class="nm">reconstruct_sources</span>(
+    <span class="nm">subject</span>=<span class="st">&quot;sample&quot;</span>, <span class="nm">output_dir</span>=<span class="st">&quot;D:/derivatives&quot;</span>,
+    <span class="nm">t1_path</span>=<span class="st">&quot;D:/anat/sample_T1w.nii.gz&quot;</span>,  <span class="cm"># &lt;- au lieu de dicom_dir</span>
+    <span class="nm">eeg_file</span>=<span class="st">&quot;D:/eeg/sample.edf&quot;</span>,
+    <span class="nm">digitization</span>=<span class="st">&quot;D:/dig/sample.elc&quot;</span>,
+    <span class="nm">simnibs_bin_dir</span>=<span class="st">&quot;C:/Users/me/SimNIBS-4.5/bin&quot;</span>,
+    <span class="nm">events</span>=<span class="st">&quot;find&quot;</span>, <span class="nm">event_id</span>={<span class="st">&quot;aud_l&quot;</span>: <span class="nu">1</span>},
+)</code></pre>
+<p>La conversion DICOM→NIfTI est simplement sautée ; le T1 est copié tel quel et alimente <code>charm</code>. Toutes les étapes suivantes sont identiques.</p>
+<figure><img src="_assets/t1_ortho.png" alt="Le T1 fourni, tel qu&#x27;utilisé pour la segmentation." loading="lazy"><figcaption>Le T1 fourni, tel qu'utilisé pour la segmentation.</figcaption></figure>
+<aside class="note">Un T2 (<code>t2_path</code>) améliore nettement la segmentation du crâne si votre protocole en comporte un. L'anonymisation DICOM n'a plus lieu d'être ici — assurez-vous que le T1 est déjà dé-identifié avant de le partager.</aside>
+  <nav class="pager"><a class="pn prev" href="03_external_events.html">← Événements dans un fichier externe</a><a class="pn next" href="05_volumetric.html">Route volumique (BEM / FreeSurfer) : le pipeline complet →</a></nav>
+</article>
+<aside class="toc">
+  <div class="toc-title">Sur cette page</div>
+  <ul><li><a href="#un-seul-argument-change">Un seul argument change</a></li></ul>
+</aside>
+</main>
+<footer>Figures générées par le pipeline sur le sujet d'exemple. Reproductible via <code>docs/tutorials/build_tutorials.py</code>.</footer>
+</body>
+</html>
