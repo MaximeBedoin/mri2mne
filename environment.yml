@@ -15,6 +15,11 @@ dependencies:
   - python=3.11
 
   # --- Core scientific stack -------------------------------------------------
+  # Pin an OPTIMIZED (OpenBLAS) BLAS/LAPACK. Without this, a solver can silently
+  # pick the netlib *reference* build, which is single-threaded and ~100x slower
+  # on the dense linear algebra MNE runs (inverse, SVDs). Benchmark: a 3000x3000
+  # double matmul should hit >200 GFLOP/s, not a few.
+  - libblas=*=*openblas
   - numpy>=1.24
   - scipy>=1.10
   - matplotlib>=3.7
