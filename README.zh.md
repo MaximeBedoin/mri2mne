@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
 [![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21513347.svg)](https://doi.org/10.5281/zenodo.21513347)
 
 从 **DICOM 格式的 MRI** + **EEG 记录**到用 MNE-Python 进行**皮层源估计**的完整流水线。
 用 Python 驱动，在 Windows 上原生运行，**无需 FreeSurfer、无需 WSL、无需 Docker**。

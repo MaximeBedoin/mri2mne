@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
 [![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21513347.svg)](https://doi.org/10.5281/zenodo.21513347)
 
 Pipeline completo que va de una **RM en DICOM** + un **registro EEG** a una
 **estimación de fuentes corticales** con MNE-Python. Controlado en Python, se
