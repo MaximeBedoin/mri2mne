@@ -2,6 +2,11 @@
 
 # التصوير بالرنين المغناطيسي ← MNE: تحليل مصادر EEG القشرية (SimNIBS FEM، أصيل على Windows)
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+
 خط معالجة كامل ينطلق من **تصوير بالرنين المغناطيسي بصيغة DICOM** + **تسجيل EEG** ليصل
 إلى **تقدير المصادر القشرية** باستخدام MNE-Python. يُدار ببايثون، ويعمل بصورة أصيلة على
 Windows، **دون FreeSurfer، دون WSL، دون Docker**. (يُوصف أدناه مسار حجمي BEM اختياري؛

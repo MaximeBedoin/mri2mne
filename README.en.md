@@ -2,6 +2,11 @@
 
 # MRI → MNE: cortical EEG source analysis (SimNIBS FEM, Windows-native)
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+
 Complete pipeline from an **MRI in DICOM** + an **EEG recording** to a
 **cortical source estimate** with MNE-Python. Driven in Python, runs natively on
 Windows, **without FreeSurfer, without WSL, without Docker**. (An optional

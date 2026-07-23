@@ -2,6 +2,11 @@
 
 # MRI → MNE: कॉर्टिकल EEG स्रोत विश्लेषण (SimNIBS FEM, Windows-नेटिव)
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+
 **DICOM में MRI** + एक **EEG रिकॉर्डिंग** से MNE-Python के साथ **कॉर्टिकल स्रोत
 अनुमान** तक का सम्पूर्ण पाइपलाइन। Python से संचालित, Windows पर नेटिव रूप से चलता है,
 **FreeSurfer के बिना, WSL के बिना, Docker के बिना**। (एक वैकल्पिक वॉल्यूमेट्रिक BEM रूट

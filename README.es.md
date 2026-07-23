@@ -2,6 +2,11 @@
 
 # RM → MNE: análisis de fuentes EEG corticales (FEM SimNIBS, nativo en Windows)
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+
 Pipeline completo que va de una **RM en DICOM** + un **registro EEG** a una
 **estimación de fuentes corticales** con MNE-Python. Controlado en Python, se
 ejecuta de forma nativa en Windows, **sin FreeSurfer, sin WSL, sin Docker**. (Una

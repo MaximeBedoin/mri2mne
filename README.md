@@ -2,6 +2,11 @@
 
 # IRM → MNE : analyse de sources EEG corticale (FEM SimNIBS, Windows natif)
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutoriels-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/)
+
 Pipeline complet allant d'un **IRM en DICOM** + un **enregistrement EEG** à
 l'**estimation de sources corticale** avec MNE-Python. Piloté en Python,
 exécutable nativement sous Windows, **sans FreeSurfer, sans WSL, sans Docker**.

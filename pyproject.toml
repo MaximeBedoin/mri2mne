@@ -11,6 +11,20 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Maxime Bedoin", email = "maxime.bedoin@gmail.com" }]
 keywords = ["EEG", "MRI", "source-localization", "MNE", "SimNIBS", "FEM", "BEM"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
 
 # The base install covers the Windows-native surface FEM route and the batch
 # runner. It does NOT install SimNIBS (`charm` + FEM solver) -- that lives in a
@@ -41,6 +55,9 @@ all = ["pyvista>=0.43", "vtk>=9.2", "dcm2niix>=1.0.20220715", "pytest>=7.4"]
 
 [project.urls]
 Homepage = "https://github.com/MaximeBedoin/mri2mne"
+Documentation = "https://maximebedoin.github.io/mri2mne/tutorials/"
+Issues = "https://github.com/MaximeBedoin/mri2mne/issues"
+Source = "https://github.com/MaximeBedoin/mri2mne"
 
 [project.scripts]
 mri2mne = "mri2mne.cli:main"

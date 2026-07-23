@@ -2,6 +2,11 @@
 
 # MRI → MNE：皮层 EEG 源分析（SimNIBS FEM，Windows 原生）
 
+[![Tests](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml/badge.svg)](https://github.com/MaximeBedoin/mri2mne/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org)
+[![Docs](https://img.shields.io/badge/docs-tutorials-brightgreen.svg)](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)
+
 从 **DICOM 格式的 MRI** + **EEG 记录**到用 MNE-Python 进行**皮层源估计**的完整流水线。
 用 Python 驱动，在 Windows 上原生运行，**无需 FreeSurfer、无需 WSL、无需 Docker**。
 （下文介绍一条可选的体积 BEM 路线；那条路线确实会用到 WSL + FreeSurfer。）
