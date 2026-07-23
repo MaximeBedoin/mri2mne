@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "mri2mne: DICOM MRI + EEG to MNE-Python source analysis"
+abstract: >-
+  A Windows-native pipeline from DICOM MRI plus an EEG recording to an EEG
+  source estimate, orchestrating established, citable libraries. The default
+  route builds a SimNIBS FEM cortical forward model; an optional route builds a
+  FreeSurfer/WSL three-layer BEM volumetric model. Coregistration and the
+  inverse solution use MNE-Python. The repository code is only the orchestration
+  between these tools.
+type: software
+authors:
+  - family-names: Bedoin
+    given-names: Maxime
+    email: maxime.bedoin@gmail.com
+version: "0.1.0"
+date-released: "2026-07-23"
+license: MIT
+repository-code: "https://github.com/MaximeBedoin/mri2mne"
+url: "https://maximebedoin.github.io/mri2mne/tutorials/"
+keywords:
+  - EEG
+  - MRI
+  - source localization
+  - MNE-Python
+  - SimNIBS
+  - FEM
+  - BEM
+  - electroencephalography
