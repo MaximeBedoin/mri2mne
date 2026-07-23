@@ -26,6 +26,11 @@ en lugar de las 10-20 h de `recon-all`.
 > corticales): **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)**
 > (EN/FR, una vez activado **GitHub Pages**). Si no, abra `docs/tutorials/index.en.html` localmente.
 
+> ⚠️ **`pip install mri2mne` instala la orquestación de Python** (el pipeline + sus
+> dependencias). Las herramientas pesadas — **SimNIBS/`charm`**, **FreeSurfer**,
+> **WSL2** — siguen siendo **requisitos del sistema** a instalar por separado (ver
+> la sección [Instalación](#instalación), más abajo).
+
 ---
 
 ## Entrada → salida, en una frase
@@ -341,9 +346,11 @@ forma más simple de desplegarlo **sin WSL**: la ruta de superficie FEM y el lot
 solo dependen de librerías de PyPI. Desde la raíz del repositorio:
 
 ```powershell
-pip install .                # instala el paquete + sus dependencias
-pip install ".[viz]"         # + PyVista/VTK (QC 3D + visor de fuentes)
-pip install ".[all]"         # + dcm2niix (binario) + pytest
+pip install mri2mne          # desde PyPI (lo más simple)
+pip install "mri2mne[viz]"   # + PyVista/VTK (QC 3D + visor de fuentes)
+pip install "mri2mne[all]"   # + dcm2niix (binario) + pytest
+
+# …o desde un checkout del repositorio, para desarrollo:
 pip install -e ".[dev]"      # modo desarrollo (editable) + pytest
 ```
 

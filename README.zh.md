@@ -23,6 +23,10 @@
 > 三维配准、皮层源）：**[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)**（英文/法文，需先启用 **GitHub Pages**）。
 > 或在本地打开 `docs/tutorials/index.en.html`。
 
+> ⚠️ **`pip install mri2mne` 安装的是 Python 编排层**（流水线 + 其依赖）。而重型工具
+> —— **SimNIBS/`charm`**、**FreeSurfer**、**WSL2** —— 仍是需单独安装的**系统前置条件**
+> （见下方的「安装」章节）。
+
 ---
 
 ## 输入 → 输出，一句话概括
@@ -320,9 +324,11 @@ copy config.example.yaml config.yaml
 最简单方式：表面 FEM 路线和批处理仅依赖 PyPI 上的库。在仓库根目录下：
 
 ```powershell
-pip install .                # 安装包 + 其依赖
-pip install ".[viz]"         # + PyVista/VTK（3D QC + 源查看器）
-pip install ".[all]"         # + dcm2niix（二进制）+ pytest
+pip install mri2mne          # 从 PyPI（最简单）
+pip install "mri2mne[viz]"   # + PyVista/VTK（3D QC + 源查看器）
+pip install "mri2mne[all]"   # + dcm2niix（二进制）+ pytest
+
+# …或从仓库 checkout 安装（用于开发）：
 pip install -e ".[dev]"      # 开发（可编辑）模式 + pytest
 ```
 

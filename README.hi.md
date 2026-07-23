@@ -26,6 +26,10 @@
 > **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)** (अंग्रेज़ी/फ़्रेंच, पहले **GitHub Pages** सक्षम करें)।
 > या `docs/tutorials/index.en.html` को स्थानीय रूप से खोलें।
 
+> ⚠️ **`pip install mri2mne` केवल Python ऑर्केस्ट्रेशन इंस्टॉल करता है** (पाइपलाइन + उसकी
+> निर्भरताएँ)। भारी उपकरण — **SimNIBS/`charm`**, **FreeSurfer**, **WSL2** — अलग से
+> इंस्टॉल की जाने वाली **सिस्टम पूर्वापेक्षाएँ** बने रहते हैं (नीचे «इंस्टॉलेशन» अनुभाग देखें)।
+
 ---
 
 ## इनपुट → आउटपुट, एक वाक्य में
@@ -338,9 +342,11 @@ copy config.example.yaml config.yaml
 निर्भर हैं। रिपॉज़िटरी की जड़ से:
 
 ```powershell
-pip install .                # पैकेज + इसकी निर्भरताएँ इंस्टॉल करता है
-pip install ".[viz]"         # + PyVista/VTK (3D QC + स्रोत व्यूअर)
-pip install ".[all]"         # + dcm2niix (बाइनरी) + pytest
+pip install mri2mne          # PyPI से (सबसे सरल)
+pip install "mri2mne[viz]"   # + PyVista/VTK (3D QC + स्रोत व्यूअर)
+pip install "mri2mne[all]"   # + dcm2niix (बाइनरी) + pytest
+
+# …या डेवलपमेंट के लिए, रेपो checkout से:
 pip install -e ".[dev]"      # विकास (एडिटेबल) मोड + pytest
 ```
 

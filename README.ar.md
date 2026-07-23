@@ -26,6 +26,10 @@ FEM، بدلاً من 10-20 ساعة لـ `recon-all`.
 > **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)** (بالإنجليزية/الفرنسية، بعد تفعيل **GitHub Pages**).
 > أو افتح `docs/tutorials/index.en.html` محليًا.
 
+> ⚠️ **`pip install mri2mne` يثبّت طبقة التنسيق بلغة Python** (خط المعالجة + اعتمادياته).
+> أما الأدوات الثقيلة — **SimNIBS/`charm`** و**FreeSurfer** و**WSL2** — فتبقى
+> **متطلبات نظام** تُثبَّت بشكل منفصل (انظر قسم «التثبيت» أدناه).
+
 ---
 
 ## المدخل ← المخرج، في جملة واحدة
@@ -334,9 +338,11 @@ copy config.example.yaml config.yaml
 WSL**: إذ لا يعتمد المسار السطحي FEM ولا الدفعة إلا على مكتبات PyPI. من جذر المستودع:
 
 ```powershell
-pip install .                # يثبِّت الحزمة + تبعياتها
-pip install ".[viz]"         # + PyVista/VTK (ضبط جودة ثلاثي الأبعاد + عارض المصادر)
-pip install ".[all]"         # + dcm2niix (ثنائي) + pytest
+pip install mri2mne          # من PyPI (الأبسط)
+pip install "mri2mne[viz]"   # + PyVista/VTK (ضبط جودة ثلاثي الأبعاد + عارض المصادر)
+pip install "mri2mne[all]"   # + dcm2niix (ثنائي) + pytest
+
+# …أو من نسخة من المستودع، للتطوير:
 pip install -e ".[dev]"      # وضع التطوير (قابل للتحرير) + pytest
 ```
 

@@ -27,6 +27,11 @@ au lieu des 10-20 h de `recon-all`.
 > sur le cortex) : **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/)**
 > (une fois **GitHub Pages** activé). Sinon, ouvrez `docs/tutorials/index.html` en local.
 
+> ⚠️ **`pip install mri2mne` installe l'orchestration Python** (le pipeline + ses
+> dépendances). Les outils lourds — **SimNIBS/`charm`**, **FreeSurfer**, **WSL2** —
+> restent des **prérequis système** à installer séparément (voir la section
+> [Installation](#installation) plus bas).
+
 ---
 
 ## Entrée → sortie, en une phrase
@@ -337,13 +342,15 @@ copy config.example.yaml config.yaml
 
 Le dépôt est un paquet installable (`pyproject.toml`, layout `src/`). C'est la
 manière la plus simple de le déployer **hors WSL** : la route surfacique FEM et
-le lot ne dépendent que de librairies PyPI. Depuis la racine du dépôt :
+le lot ne dépendent que de librairies PyPI :
 
 ```powershell
-pip install .                # installe le paquet + ses dépendances
-pip install ".[viz]"         # + PyVista/VTK (QC 3D + visualiseur de sources)
-pip install ".[all]"         # + dcm2niix (binaire) + pytest
-pip install -e ".[dev]"      # mode développement (éditable) + pytest
+pip install mri2mne          # depuis PyPI (le plus simple)
+pip install "mri2mne[viz]"   # + PyVista/VTK (QC 3D + visualiseur de sources)
+pip install "mri2mne[all]"   # + dcm2niix (binaire) + pytest
+
+# …ou depuis un checkout du dépôt, pour le développement :
+pip install -e ".[dev]"      # mode éditable + pytest
 ```
 
 Après installation :

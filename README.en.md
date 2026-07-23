@@ -27,6 +27,11 @@ instead of the 10-20 h of `recon-all`.
 > sources): **[maximebedoin.github.io/mri2mne/tutorials](https://maximebedoin.github.io/mri2mne/tutorials/index.en.html)**
 > (once **GitHub Pages** is enabled). Otherwise, open `docs/tutorials/index.en.html` locally.
 
+> ⚠️ **`pip install mri2mne` installs the Python orchestration** (the pipeline +
+> its dependencies). The heavy tools — **SimNIBS/`charm`**, **FreeSurfer**, **WSL2**
+> — remain **system prerequisites** to install separately (see the
+> [Installation](#installation) section below).
+
 ---
 
 ## Input → output, in one sentence
@@ -339,9 +344,11 @@ is the simplest way to deploy it **without WSL**: the surface FEM route and the
 batch depend only on PyPI libraries. From the repository root:
 
 ```powershell
-pip install .                # installs the package + its dependencies
-pip install ".[viz]"         # + PyVista/VTK (3D QC + source viewer)
-pip install ".[all]"         # + dcm2niix (binary) + pytest
+pip install mri2mne          # from PyPI (simplest)
+pip install "mri2mne[viz]"   # + PyVista/VTK (3D QC + source viewer)
+pip install "mri2mne[all]"   # + dcm2niix (binary) + pytest
+
+# …or from a repo checkout, for development:
 pip install -e ".[dev]"      # development (editable) mode + pytest
 ```
 
