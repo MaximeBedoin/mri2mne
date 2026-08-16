@@ -1,4 +1,4 @@
-> 🌍 [Français](README.md) · [English](README.en.md) · **中文** · [हिन्दी](README.hi.md) · [Español](README.es.md) · [العربية](README.ar.md)
+> 🌍 [Français](README.fr.md) · [English](README.md) · **中文** · [हिन्दी](README.hi.md) · [Español](README.es.md) · [العربية](README.ar.md)
 
 # MRI → MNE：皮层 EEG 源分析（SimNIBS FEM，Windows 原生）
 
@@ -58,7 +58,7 @@
 
 ## 端到端示例（`data/` 文件夹）
 
-仓库在 [`data/`](data/README.en.md) 中附带了一个开箱即用的示例：一位带有
+仓库在 [`data/`](data/README.md) 中附带了一个开箱即用的示例：一位带有
 MRI DICOM + EEG + 数字化的患者（外加第二位用于批处理）。
 
 ```
@@ -73,7 +73,7 @@ data/
   README.md                # 结构与来源的详细说明
 ```
 
-**文件来源**（详见 [data/README.en.md](data/README.en.md)）：
+**文件来源**（详见 [data/README.md](data/README.md)）：
 
 | 文件 | 出处 | 性质 |
 |---|---|---|
@@ -135,7 +135,7 @@ python run_pipeline.py --config data/config.batch.yaml
 `data/_batch_derivatives/`。EEG 逆问题随后按受试者用相应的 wrapper 完成。
 
 > 示例的 EEG/数字化来自与 MRI **不同**的受试者（用于演示的替代品）：链路能运行，
-> 但结果没有临床意义。见 [data/README.en.md](data/README.en.md)。
+> 但结果没有临床意义。见 [data/README.md](data/README.md)。
 
 ---
 

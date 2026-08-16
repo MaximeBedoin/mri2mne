@@ -1,4 +1,4 @@
-> 🌍 [Français](README.md) · [English](README.en.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [Español](README.es.md) · **العربية**
+> 🌍 [Français](README.fr.md) · [English](README.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [Español](README.es.md) · **العربية**
 
 # التصوير بالرنين المغناطيسي ← MNE: تحليل مصادر EEG القشرية (SimNIBS FEM، أصيل على Windows)
 
@@ -63,7 +63,7 @@ EDF أو غيرها) + رقمنة الأقطاب. **نصل إلى** تقدير �
 
 ## مثال من الطرف إلى الطرف (مجلد `data/`)
 
-يتضمّن المستودع مثالاً جاهزاً للاستخدام في [`data/`](data/README.en.md): مريض واحد لديه
+يتضمّن المستودع مثالاً جاهزاً للاستخدام في [`data/`](data/README.md): مريض واحد لديه
 رنين مغناطيسي DICOM + EEG + رقمنة (بالإضافة إلى ثانٍ لأجل الدفعة).
 
 ```
@@ -78,7 +78,7 @@ data/
   README.md                # تفصيل البنية والمصدر
 ```
 
-**مصدر الملفات** (التفصيل في [data/README.en.md](data/README.en.md)):
+**مصدر الملفات** (التفصيل في [data/README.md](data/README.md)):
 
 | الملف | المنشأ | الطبيعة |
 |---|---|---|
@@ -143,7 +143,7 @@ python run_pipeline.py --config data/config.batch.yaml
 wrapper المقابل.
 
 > يأتي EEG/الرقمنة في المثال من مشارك **آخر** غير صاحب الرنين المغناطيسي (بديلان للعرض):
-> تعمل السلسلة، لكن النتيجة بلا معنى سريري. انظر [data/README.en.md](data/README.en.md).
+> تعمل السلسلة، لكن النتيجة بلا معنى سريري. انظر [data/README.md](data/README.md).
 
 ---
 

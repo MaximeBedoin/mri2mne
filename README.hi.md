@@ -1,4 +1,4 @@
-> 🌍 [Français](README.md) · [English](README.en.md) · [中文](README.zh.md) · **हिन्दी** · [Español](README.es.md) · [العربية](README.ar.md)
+> 🌍 [Français](README.fr.md) · [English](README.md) · [中文](README.zh.md) · **हिन्दी** · [Español](README.es.md) · [العربية](README.ar.md)
 
 # MRI → MNE: कॉर्टिकल EEG स्रोत विश्लेषण (SimNIBS FEM, Windows-नेटिव)
 
@@ -62,7 +62,7 @@
 
 ## आद्योपांत उदाहरण (`data/` फ़ोल्डर)
 
-रिपॉज़िटरी में [`data/`](data/README.en.md) में एक तैयार-उपयोग उदाहरण शामिल है: MRI
+रिपॉज़िटरी में [`data/`](data/README.md) में एक तैयार-उपयोग उदाहरण शामिल है: MRI
 DICOM + EEG + डिजिटलीकरण वाला एक रोगी (बैच के लिए एक दूसरा भी)।
 
 ```
@@ -77,7 +77,7 @@ data/
   README.md                # संरचना और स्रोत का विवरण
 ```
 
-**फ़ाइलों का स्रोत** (विवरण [data/README.en.md](data/README.en.md) में):
+**फ़ाइलों का स्रोत** (विवरण [data/README.md](data/README.md) में):
 
 | फ़ाइल | उद्गम | प्रकृति |
 |---|---|---|
@@ -143,7 +143,7 @@ wrapper के साथ किया जाता है।
 
 > उदाहरण के EEG/डिजिटलीकरण MRI से **किसी अन्य** विषय से आते हैं (डेमो के लिए
 > स्थानापन्न): शृंखला चलती है, परन्तु परिणाम का कोई नैदानिक अर्थ नहीं है। देखें
-> [data/README.en.md](data/README.en.md)।
+> [data/README.md](data/README.md)।
 
 ---
 

@@ -1,4 +1,4 @@
-> 🌍 [Français](README.md) · [English](README.en.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · **Español** · [العربية](README.ar.md)
+> 🌍 [Français](README.fr.md) · [English](README.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · **Español** · [العربية](README.ar.md)
 
 # RM → MNE: análisis de fuentes EEG corticales (FEM SimNIBS, nativo en Windows)
 
@@ -65,7 +65,7 @@ Dos niveles de uso:
 
 ## Ejemplo de extremo a extremo (carpeta `data/`)
 
-El repositorio incluye un ejemplo listo para usar en [`data/`](data/README.en.md):
+El repositorio incluye un ejemplo listo para usar en [`data/`](data/README.md):
 un paciente con RM DICOM + EEG + digitalización (más un segundo para el lote).
 
 ```
@@ -80,7 +80,7 @@ data/
   README.md                # detalle de la estructura y la procedencia
 ```
 
-**Procedencia de los archivos** (detalle en [data/README.en.md](data/README.en.md)):
+**Procedencia de los archivos** (detalle en [data/README.md](data/README.md)):
 
 | Archivo | Origen | Naturaleza |
 |---|---|---|
@@ -146,7 +146,7 @@ por sujeto con el wrapper correspondiente.
 
 > El EEG/digitalización del ejemplo provienen de **otro** sujeto que la RM
 > (sustitutos para la demo): la cadena se ejecuta, pero el resultado no tiene
-> sentido clínico. Ver [data/README.en.md](data/README.en.md).
+> sentido clínico. Ver [data/README.md](data/README.md).
 
 ---
 

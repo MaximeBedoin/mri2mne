@@ -1,43 +1,43 @@
-> 🌍 **Français** · [English](README.en.md)
+> 🌍 [Français](README.fr.md) · **English**
 
-# Données d'exemple
+# Example data
 
-Deux patients de démonstration, pour montrer **l'architecture des données** et
-faire tourner le pipeline (run simple et lot). Structure par patient :
+Two demonstration patients, to show the **data layout** and to run the pipeline
+(single run and batch). Per-patient structure:
 
 ```
 data/
   patient01/
-    dicom/                 # série IRM T1w en DICOM (384 coupes)
-    patient01_eeg.edf      # enregistrement EEG
-    patient01_dig.fif      # digitalisation des électrodes
-    patient01-eve.fif      # événements (pour l'épochage)
-  patient02/               # même structure (pour démontrer le lot)
+    dicom/                 # T1w MRI series in DICOM (384 slices)
+    patient01_eeg.edf      # EEG recording
+    patient01_dig.fif      # electrode digitization
+    patient01-eve.fif      # events (for epoching)
+  patient02/               # same structure (to demonstrate the batch)
     ...
 ```
 
-Les sorties d'analyse se rangent dans des **sous-dossiers du patient** :
+The analysis outputs are stored in **subfolders of the patient**:
 
 ```
   patient01/
-    surface/               # sortie route surfacique (FEM)  -> .../patient01/mne/patient01-lh.stc
-    volumetric/            # sortie route volumique (BEM)    -> .../patient01/mne/patient01-vol-vl.stc
+    surface/               # surface route output (FEM)  -> .../patient01/mne/patient01-lh.stc
+    volumetric/            # volumetric route output (BEM) -> .../patient01/mne/patient01-vol-vl.stc
 ```
 
-Les commandes exactes (surfacique + volumique, run simple + lot) sont dans le
-[README principal](../README.md), section « Exemple de bout en bout ».
+The exact commands (surface + volumetric, single run + batch) are in the
+[main README](../README.md), section "End-to-end example".
 
-## Provenance et avertissement
+## Provenance and disclaimer
 
-- **DICOM** : jeu public anonymisé (`datalad/example-dicom-structural`,
-  `PatientIdentityRemoved=YES`). Une IRM structurelle T1w réelle.
-- **EEG + digitalisation** : jeu `sample` de MNE-Python — un **sujet différent**
-  de l'IRM. Ce sont des **substituts** pour illustrer la structure et les
-  commandes ; l'EEG n'est pas apparié à cette anatomie, donc **le résultat n'a
-  pas de sens clinique**. Pour un vrai sujet, l'EEG et la digitalisation doivent
-  provenir du **même** patient que l'IRM.
-- `patient02` est une copie de `patient01`, uniquement pour démontrer le lot.
+- **DICOM**: anonymized public dataset (`datalad/example-dicom-structural`,
+  `PatientIdentityRemoved=YES`). A real structural T1w MRI.
+- **EEG + digitization**: MNE-Python `sample` dataset — a **different subject**
+  from the MRI. These are **stand-ins** to illustrate the structure and the
+  commands; the EEG is not matched to this anatomy, so **the result has no
+  clinical meaning**. For a real subject, the EEG and the digitization must come
+  from the **same** patient as the MRI.
+- `patient02` is a copy of `patient01`, only to demonstrate the batch.
 
-> Note : la route volumique (BEM) peut **signaler** ce T1 clinique précis
-> (surfaces de crâne watershed auto-intersectantes) — c'est le comportement
-> attendu sur certaines acquisitions atypiques (voir le README principal).
+> Note: the volumetric route (BEM) may **flag** this particular clinical T1
+> (self-intersecting watershed skull surfaces) — this is the expected behavior on
+> certain atypical acquisitions (see the main README).
